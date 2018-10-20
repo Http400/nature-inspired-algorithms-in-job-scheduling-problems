@@ -11,6 +11,9 @@
 *.userosscache
 *.sln.docstates
 
+Tests/IntegrationTests/TestInstaces/*
+Tests/IntegrationTests/TestResults/*
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
