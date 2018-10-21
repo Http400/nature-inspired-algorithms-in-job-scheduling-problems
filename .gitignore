@@ -11,6 +11,7 @@
 *.userosscache
 *.sln.docstates
 ConsoleApp/InputData/TestInstances/*
+ConsoleApp/Results/*
 Tests/IntegrationTests/TestInstances/*
 Tests/IntegrationTests/TestResults/*
 

@@ -7,15 +7,17 @@ namespace Core.Algorithms
     public class AntColonyOptimizationAlgorithm : Algorithm
     {
         private float _evaporationRate;
+        private float _Q;
         private List<(int jobId, int? machineId)> _nodes;
         private List<Path> _paths;
 
-        public AntColonyOptimizationAlgorithm(int maxIterations, int populationCount, float evaporationRate, SchedulingProblem schedulingProblem) : base()
+        public AntColonyOptimizationAlgorithm(int maxIterations, int populationCount, float evaporationRate, SchedulingProblem schedulingProblem, float Q = 1F) : base()
         {
             _maxIterations = maxIterations;
             _schedulingProblem = schedulingProblem;
             _populationCount = populationCount;
             _evaporationRate = evaporationRate;
+            _Q = Q;
             _population = schedulingProblem.CreateAntsPopulation(_populationCount);
             _nodes = schedulingProblem.GenerateGraphNodes();
             _paths = schedulingProblem.GeneratePaths(0.5F);
@@ -97,10 +99,7 @@ namespace Core.Algorithms
 
                     foreach (var path in nextFeasiblePaths)
                     {
-                        var distance = _schedulingProblem.GetDistance(ant, path.EndingOperation);
-                        var n = (float) 1 / distance;
-
-                        cumulative += path.Pheromone * n / probabilitySum * 100;
+                        cumulative += path.Pheromone / probabilitySum * 100;
                         if (random - cumulative < 1)
                         {
                             selectedPath = path;
@@ -128,7 +127,7 @@ namespace Core.Algorithms
             {
                 foreach (var path in ant.Paths)
                 {
-                    path.Pheromone += (float) 5 / ant.TimeSpan;
+                    path.Pheromone += _Q / ant.TimeSpan;
                 }
             }
         }
@@ -139,9 +138,7 @@ namespace Core.Algorithms
 
             foreach (var path in paths)
             {
-                var distance = _schedulingProblem.GetDistance(ant, path.EndingOperation);
-                var n = (float) 1 / distance;
-                sum += path.Pheromone * n;
+                sum += path.Pheromone;
             }
 
             return sum;
