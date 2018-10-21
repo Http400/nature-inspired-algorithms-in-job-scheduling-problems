@@ -10,12 +10,39 @@ namespace Core.Utils
 {
     public static class FileHelper
     {
+        private static string _url = "http://mistic.heig-vd.ch/taillard/problemes.dir/ordonnancement.dir/ordonnancement.html";
+        private static string _urlBase = "http://mistic.heig-vd.ch/taillard/problemes.dir/ordonnancement.dir/";
+
+
+        public static void DownloadTaillardTestInstances(string pathToSave)
+        {
+            if (Directory.Exists(pathToSave))
+            {
+                var directory = new DirectoryInfo(pathToSave);
+                directory.Delete(true);
+            }
+
+            // Act
+            var pageSource = FileHelper.GetTaillardTestingInstancesPageSource().Result;
+            var urls = FileHelper.GetTxtFilesUrlsFromPageSource(pageSource);
+
+            foreach (var fileUrl in urls)
+            {
+                var (problemType, fileName) = FileHelper.GetSchedulingProblemTypeAndFilenameFromUrl(fileUrl);
+                FileHelper.DownloadFile(fileUrl, pathToSave + "/" + problemType, fileName);
+
+                if (fileName.Contains("best"))
+                    continue;
+
+                FileHelper.SplitFile(pathToSave + "/" + problemType, fileName, new string[] { "number of jobs", "Nb of jobs" });
+            }
+        }
+
         public static async Task<string> GetTaillardTestingInstancesPageSource()
         {
             var httpClient = new HttpClient();
-            var url = "http://mistic.heig-vd.ch/taillard/problemes.dir/ordonnancement.dir/ordonnancement.html";
 
-            using (var response = await httpClient.GetAsync(url))
+            using (var response = await httpClient.GetAsync(_url))
             {
                 using (var content = response.Content)
                 {
@@ -43,14 +70,14 @@ namespace Core.Utils
             return (schedulingProblemType, fileName);
         }
 
-        public static void DownloadFile(string url, string path, string fileName)
+        public static void DownloadFile(string fileUrl, string path, string fileName)
         {
             CreateFolderIfNotExists(path);
             string filePath = path + "/" + fileName;
             
             using (var webClient = new WebClient())
             {
-                webClient.DownloadFile(url, filePath);
+                webClient.DownloadFile(_urlBase + fileUrl, filePath);
             }
         }
 
@@ -100,6 +127,12 @@ namespace Core.Utils
         {
             CreateFolderIfNotExists(path);
             File.AppendAllText(path + "/" + fileName, content + Environment.NewLine);
+        }
+
+        public static void CreateFile(string path, string fileName, string content)
+        {
+            CreateFolderIfNotExists(path);
+            File.WriteAllText(path + "/" + fileName, content + Environment.NewLine);
         }
 
         private static void CreateFolderIfNotExists(string path)

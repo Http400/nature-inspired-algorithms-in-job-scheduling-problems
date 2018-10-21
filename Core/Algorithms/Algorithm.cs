@@ -18,7 +18,27 @@ namespace Core.Algorithms
             _solutionsDiversities = new List<int>();
         }
 
-        public abstract Solution Perform();
+        public abstract void PerformStep();
+
+        public virtual Solution Perform()
+        {
+            for (int i = 0; i < _maxIterations; i++)
+            {
+                PerformStep();
+
+                UpdatePercentage(i);
+            }
+
+            return _globalOptimum;
+        }
+
+        private void UpdatePercentage(int i)
+        {
+            var p = (i + 1) * 100 / _maxIterations;
+
+            System.Console.Write("\r{0}%", p);
+            System.Threading.Thread.Sleep(50);
+        }
 
         protected virtual void CalculateSolutionsDiversity()
         {
@@ -46,21 +66,6 @@ namespace Core.Algorithms
             _solutionsDiversities.Add(diverseSolutions.Count);
         }
 
-        // protected virtual void CalculateSolutionsDiversity()
-        // {
-        //     var diverseSolutions = new List<Solution>();
-
-        //     foreach (var solution in _population)
-        //     {
-        //         if ( diverseSolutions.Count == 0 || ListDoesNotContainsSolution(diverseSolutions, solution) )
-        //         {
-        //             diverseSolutions.Add(solution);
-        //         }
-        //     }
-
-        //     _solutionsDiversities.Add(diverseSolutions.Count);
-        // }
-
         private bool ListDoesNotContainsSolution(List<Solution> solutionList, Solution solution)
         {
             foreach (var dS in solutionList)
@@ -80,12 +85,18 @@ namespace Core.Algorithms
             return false;
         }
 
-        protected virtual void GatherAlgorithmEfficiencyInformation(int i)
+        protected virtual void GatherAlgorithmEfficiencyInformation()
         {
             // System.IO.File.AppendAllText(
             //     System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestResults/eff.txt", 
             //     "Iteration: " + i + ", solutionsDiversity: " + _solutionsDiversities.Last() + ", globalOpt: " + _globalOptimum.TimeSpan + System.Environment.NewLine
             // );
+        }
+
+        public enum Type {
+            CO,
+            ACO,
+            GA
         }
     }
 }

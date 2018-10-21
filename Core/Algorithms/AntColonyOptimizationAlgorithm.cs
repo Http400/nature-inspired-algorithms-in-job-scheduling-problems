@@ -21,27 +21,22 @@ namespace Core.Algorithms
             _paths = schedulingProblem.GeneratePaths(0.5F);
         }
 
-        public override Solution Perform()
+        public override void PerformStep()
         {
-            for (int i = 0; i < _maxIterations; i++)
-            {
-                // System.IO.File.AppendAllText(
-                //     System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestResults/iteration.txt", 
-                //     "Iteration: " + i + Environment.NewLine
-                // );
+            // System.IO.File.AppendAllText(
+            //     System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestResults/iteration.txt", 
+            //     "Iteration: " + i + Environment.NewLine
+            // );
 
-                PathSelecting();
-                PheromoneEvaporation();
-                UpdateCriterionValue();
-                LocalPheromoneUpdate();
-                FindGlobalOptimum();
-            
-                CalculateSolutionsDiversity();
-                GatherAlgorithmEfficiencyInformation(i);
-                ResetAntsPaths();
-            }
-
-            return _globalOptimum;
+            PathSelecting();
+            PheromoneEvaporation();
+            UpdateCriterionValue();
+            LocalPheromoneUpdate();
+            FindGlobalOptimum();
+        
+            CalculateSolutionsDiversity();
+            GatherAlgorithmEfficiencyInformation();
+            ResetAntsPaths();
         }
 
         public List<Solution> GetPopulation()

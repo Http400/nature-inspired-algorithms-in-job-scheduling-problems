@@ -14,20 +14,15 @@ namespace Core.Algorithms
             _population = CreatePopulation();
         }
 
-        public override Solution Perform()
+        public override void PerformStep()
         {
-            for (int i = 0; i < _maxIterations; i++)
-            {
-                CreateNextGeneration();
-                Mutation();
-                UpdateCriterionValue();
-                FindGlobalOptimum();
+            CreateNextGeneration();
+            Mutation();
+            UpdateCriterionValue();
+            FindGlobalOptimum();
 
-                CalculateSolutionsDiversity();
-                GatherAlgorithmEfficiencyInformation(i);
-            }
-
-            return _globalOptimum;
+            CalculateSolutionsDiversity();
+            GatherAlgorithmEfficiencyInformation();
         }
 
         public List<Solution> GetPopulation()

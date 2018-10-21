@@ -8,11 +8,6 @@ namespace Core.Algorithms
     {
         private int _maxStep;
         private int _visual;
-        // private int _maxIterations;
-        // private int _populationCount;
-        // private SchedulingProblem _schedulingProblem;
-        //private List<Solution> _population;
-        // private Solution _globalOptimum;
 
         public CockroachAlgorithm(int maxStep, int visual, int maxIterations, int populationCount, SchedulingProblem schedulingProblem) : base()
         {
@@ -25,21 +20,16 @@ namespace Core.Algorithms
             FindGlobalOptimum();
         }
 
-        public override Solution Perform()
+        public override void PerformStep()
         {
-            for (int i = 0; i < _maxIterations; i++)
-            {
-                SwarmChasing();
-                Dispersion();
-                UpdateCriterionValue();
-                FindGlobalOptimum();
-                RuthlessBehavior();
+            SwarmChasing();
+            Dispersion();
+            UpdateCriterionValue();
+            FindGlobalOptimum();
+            RuthlessBehavior();
 
-                CalculateSolutionsDiversity();
-                GatherAlgorithmEfficiencyInformation(i);
-            }
-
-            return _globalOptimum;
+            CalculateSolutionsDiversity();
+            GatherAlgorithmEfficiencyInformation();
         }
 
         public List<Solution> GetPopulation()

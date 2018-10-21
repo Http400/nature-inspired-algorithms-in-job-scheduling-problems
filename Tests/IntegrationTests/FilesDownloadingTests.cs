@@ -11,8 +11,7 @@ namespace Tests.IntegrationTests
         public void test_downloading_taillard_instances()
         {
             // Arrange
-            var urlBase = "http://mistic.heig-vd.ch/taillard/problemes.dir/ordonnancement.dir/";
-            var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestInstaces";
+            var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestInstances";
 
             if (Directory.Exists(path))
             {
@@ -27,7 +26,7 @@ namespace Tests.IntegrationTests
             foreach (var fileUrl in urls)
             {
                 var (problemType, fileName) = FileHelper.GetSchedulingProblemTypeAndFilenameFromUrl(fileUrl);
-                FileHelper.DownloadFile(urlBase + fileUrl, path + "/" + problemType, fileName);
+                FileHelper.DownloadFile(fileUrl, path + "/" + problemType, fileName);
 
                 if (fileName.Contains("best"))
                     continue;

@@ -14,5 +14,18 @@ namespace Core.JobScheduling.Base
                     return new OpenShop.SchedulingProblem(inputData);
             }
         }
+
+        public static SchedulingProblem Create(string type, string inputData)
+        {
+            switch(type)
+            {
+                case "f":
+                    return new FlowShop.SchedulingProblem(inputData);
+                case "j":
+                    return new JobShop.SchedulingProblem(inputData);
+                default:
+                    return new OpenShop.SchedulingProblem(inputData);
+            }
+        }
     }
 }

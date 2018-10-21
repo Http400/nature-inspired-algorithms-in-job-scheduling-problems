@@ -13,7 +13,7 @@ namespace Tests.IntegrationTests
         public void test_perform_ant_colony_optimization_algorithm(string directory, string fileName, SchedulingProblemType schedulingProblemType, int maxIterations, int populationCount, float evaporationRate)
         {
             // Arrange
-            var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestInstaces/" + directory;
+            var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestInstances/" + directory;
             var resultsPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestResults/ACO";
 
             // Act
@@ -45,29 +45,29 @@ namespace Tests.IntegrationTests
             //     50,                            // populationCount
             //     0.2F                            // evaporationRate
             // }
-            new object[] {
-                "jobshop/tai15_15",             // directory
-                "0.txt",                        // fileName
-                SchedulingProblemType.JobShop,  // schedulingProblemType
-                5,                             // maxIterations
-                10,                             // populationCount
-                0.8F                            // evaporationRate
-            }
             // new object[] {
-            //     "openshop/tai4_4",             // directory
+            //     "jobshop/tai15_15",             // directory
             //     "0.txt",                        // fileName
-            //     SchedulingProblemType.OpenShop,  // schedulingProblemType
-            //     100,                             // maxIterations
-            //     100,                             // populationCount
-            //     0.2F                            // evaporationRate
+            //     SchedulingProblemType.JobShop,  // schedulingProblemType
+            //     5,                             // maxIterations
+            //     10,                             // populationCount
+            //     0.8F                            // evaporationRate
             // }
+            new object[] {
+                "openshop/tai4_4",             // directory
+                "0.txt",                        // fileName
+                SchedulingProblemType.OpenShop,  // schedulingProblemType
+                20,                             // maxIterations
+                50,                             // populationCount
+                0.2F                            // evaporationRate
+            }
         };
 
         [Test, TestCaseSource("perform_cockroach_optimization_algorithm_test_cases")]
         public void test_perform_cockroach_optimization_algorithm(string directory, string fileName, SchedulingProblemType schedulingProblemType, int maxIterations, int populationCount, int maxStep, int visual)
         {
             // Arrange
-            var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestInstaces/" + directory;
+            var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestInstances/" + directory;
             var resultsPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestResults/CO";
 
             // Act
@@ -124,7 +124,7 @@ namespace Tests.IntegrationTests
         public void test_perform_genetic_algorithm(string directory, string fileName, SchedulingProblemType schedulingProblemType, int maxIterations, int populationCount)
         {
             // Arrange
-            var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestInstaces/" + directory;
+            var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestInstances/" + directory;
             var resultsPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestResults/GA";
 
             // Act
@@ -180,7 +180,7 @@ namespace Tests.IntegrationTests
         public void test_creating_scheduling_problem_from_file_input_data(string directory, string fileName, SchedulingProblemType schedulingProblemType, int expectedJobsCount, int expectedMachinesCount)
         {
             // Arrange
-            var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestInstaces/" + directory;
+            var path = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestInstances/" + directory;
 
             // Act
             var inputData = FileHelper.ReadFile(path, fileName);

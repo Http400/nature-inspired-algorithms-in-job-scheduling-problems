@@ -10,8 +10,8 @@
 *.user
 *.userosscache
 *.sln.docstates
-
-Tests/IntegrationTests/TestInstaces/*
+ConsoleApp/InputData/TestInstances/*
+Tests/IntegrationTests/TestInstances/*
 Tests/IntegrationTests/TestResults/*
 
 
