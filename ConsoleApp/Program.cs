@@ -37,14 +37,14 @@ namespace ConsoleApp
                 command.Description = "Solve job scheduling problem using Cockroach Optimization algorithm.";
                 command.HelpOption("-?|-h|--help");
                 
-                var populationSizeOption    = command.Option("-s|--size",       "Specify population size",                              CommandOptionType.SingleValue);
-                var iterationsNumberOption  = command.Option("-i|--iterations", "Specify number of iterations",                         CommandOptionType.SingleValue);
-                var visualOption            = command.Option("-v|--visual",     "Specify visual parameter",                             CommandOptionType.SingleValue);
-                var maxStepOption           = command.Option("-m|--max-step",   "Specify max step size",                                CommandOptionType.SingleValue);
-                var jobTypeOption           = command.Option("-j|--job-type",   "Specify job scheduling type: \"f\", \"j\" or \"o\"",   CommandOptionType.SingleValue);
-                var inputFileOption         = command.Option("-f|--input-file", "Specify input file",                                   CommandOptionType.SingleValue);
-                var saveResultOption        = command.Option("-r|--save-result","Specify if save result",                               CommandOptionType.NoValue);
-                var executionsNumberOption  = command.Option("-e|--executions", "Specify number of executions",                         CommandOptionType.SingleValue);
+                var populationSizeOption    = command.Option("-s|--size",           "Specify population size",                      CommandOptionType.SingleValue);
+                var iterationsNumberOption  = command.Option("-i|--iterations",     "Specify number of iterations",                 CommandOptionType.SingleValue);
+                var visualOption            = command.Option("-v|--visual",         "Specify visual parameter",                     CommandOptionType.SingleValue);
+                var maxStepOption           = command.Option("-ms|--max-step",      "Specify max step size",                        CommandOptionType.SingleValue);
+                var jobTypeOption           = command.Option("-js|--jobs-system",   "Specify jobs system: \"f\", \"j\" or \"o\"",   CommandOptionType.SingleValue);
+                var inputFileOption         = command.Option("-if|--input-file",    "Specify input file",                           CommandOptionType.SingleValue);
+                var saveResultOption        = command.Option("-sr|--save-result",   "Specify if save result",                       CommandOptionType.NoValue);
+                var executionsNumberOption  = command.Option("-e|--executions",     "Specify number of executions",                 CommandOptionType.SingleValue);
 
                 command.OnExecute(() => {
 
@@ -105,14 +105,14 @@ namespace ConsoleApp
                 command.Description = "Solve job scheduling problem using Ant Colony Optimization algorithm.";
                 command.HelpOption("-?|-h|--help");
 
-                var populationSizeOption    = command.Option("-s|--size",       "Specify population size",                              CommandOptionType.SingleValue);
-                var iterationsNumberOption  = command.Option("-i|--iterations", "Specify number of iterations",                         CommandOptionType.SingleValue);
-                var evaporationRateOption   = command.Option("-p|--evaporation","Specify value of evaporation rate parameter",          CommandOptionType.SingleValue);
-                var laidPheromoneOption     = command.Option("-q",              "Specify value of laid pheromone parameter Q",          CommandOptionType.SingleValue);
-                var jobTypeOption           = command.Option("-j|--job-type",   "Specify job scheduling type: \"f\", \"j\" or \"o\"",   CommandOptionType.SingleValue);
-                var inputFileOption         = command.Option("-f|--input-file", "Specify input file",                                   CommandOptionType.SingleValue);
-                var saveResultOption        = command.Option("-r|--save-result","Specify if save result",                               CommandOptionType.NoValue);
-                var executionsNumberOption  = command.Option("-e|--executions", "Specify number of executions",                         CommandOptionType.SingleValue);
+                var populationSizeOption    = command.Option("-s|--size",           "Specify population size",                      CommandOptionType.SingleValue);
+                var iterationsNumberOption  = command.Option("-i|--iterations",     "Specify number of iterations",                 CommandOptionType.SingleValue);
+                var evaporationRateOption   = command.Option("-p|--evaporation",    "Specify value of evaporation rate parameter",  CommandOptionType.SingleValue);
+                var laidPheromoneOption     = command.Option("-q",                  "Specify value of laid pheromone parameter Q",  CommandOptionType.SingleValue);
+                var jobTypeOption           = command.Option("-js|--jobs-system",   "Specify jobs system: \"f\", \"j\" or \"o\"",   CommandOptionType.SingleValue);
+                var inputFileOption         = command.Option("-if|--input-file",    "Specify input file",                           CommandOptionType.SingleValue);
+                var saveResultOption        = command.Option("-sr|--save-result",   "Specify if save result",                       CommandOptionType.NoValue);
+                var executionsNumberOption  = command.Option("-e|--executions",     "Specify number of executions",                 CommandOptionType.SingleValue);
 
                 command.OnExecute(() => {
                     var populationSize  = populationSizeOption.HasValue()   ? Int16.Parse( populationSizeOption.Value() )   : 10;
@@ -159,6 +159,68 @@ namespace ConsoleApp
                         DateTime time = DateTime.Now;
                         string format = "dd.MM.yyyy_HH:mm:ss";
                         var fileName = "ACO_" + time.ToString(format) + ".txt";
+                        Console.WriteLine("Saving results to " + fileName);
+                        FileHelper.CreateFile(_resultsDirectory, fileName, stringResult);
+                    }
+
+                    Console.WriteLine(Environment.NewLine + "Calculations finished.");
+
+                    return 0;
+                });
+            });
+
+            app.Command("ga", (command) => {
+                command.Description = "Solve job scheduling problem using Genetic Algorithm.";
+                command.HelpOption("-?|-h|--help");
+
+                var populationSizeOption    = command.Option("-s|--size",           "Specify population size",                      CommandOptionType.SingleValue);
+                var iterationsNumberOption  = command.Option("-i|--iterations",     "Specify number of iterations",                 CommandOptionType.SingleValue);
+                var jobTypeOption           = command.Option("-js|--jobs-system",   "Specify jobs system: \"f\", \"j\" or \"o\"",   CommandOptionType.SingleValue);
+                var inputFileOption         = command.Option("-if|--input-file",    "Specify input file",                           CommandOptionType.SingleValue);
+                var saveResultOption        = command.Option("-sr|--save-result",   "Specify if save result",                       CommandOptionType.NoValue);
+                var executionsNumberOption  = command.Option("-e|--executions",     "Specify number of executions",                 CommandOptionType.SingleValue);
+
+                command.OnExecute(() => {
+                    var populationSize  = populationSizeOption.HasValue()   ? Int16.Parse( populationSizeOption.Value() )   : 10;
+                    var iterationNumber = iterationsNumberOption.HasValue() ? Int16.Parse( iterationsNumberOption.Value() ) : 5;
+                    var jobType         = jobTypeOption.HasValue()          ? jobTypeOption.Value()                         : "f";
+                    var inputFile       = inputFileOption.HasValue()        ? inputFileOption.Value()                       : "TestInstances/flowshop/tai20_5/0.txt";
+                    var saveResult      = saveResultOption.HasValue()       ? true                                          : false;
+                    var executions      = executionsNumberOption.HasValue() ? Int16.Parse( executionsNumberOption.Value() ) : 1;
+
+                    var optionsString = 
+                          $" - population size:\t {populationSize}, {Environment.NewLine}"
+                        + $" - iterations number:\t {iterationNumber}. {Environment.NewLine}"
+                        + $" - job scheduling type:\t {jobType}, {Environment.NewLine}"
+                        + $" - input file:\t\t {inputFile} {Environment.NewLine}"
+                        + $" - save results:\t {saveResult} {Environment.NewLine}"
+                        + $" - executions number:\t {executions} {Environment.NewLine}";
+
+                    Console.WriteLine($"{Environment.NewLine}"
+                        + $"Starting perform GA algorithm with given options: {Environment.NewLine}"
+                        + optionsString
+                    );
+
+                    var inputData = FileHelper.ReadFile(_inputDataDirectory, inputFile);
+                    var schedulingProblem = SchedulingProblemFactory.Create(jobType, inputData);
+                    var algorithm = new GeneticAlgorithm(iterationNumber, populationSize, schedulingProblem);                 
+                    var stringResult = optionsString.Replace("\t", "") + Environment.NewLine;
+
+                    for (int i = 0; i < executions; i++)
+                    {
+                        if (executions > 0)
+                            Console.WriteLine("Execution number: " + (i + 1));
+
+                        var result = algorithm.Perform();
+                        stringResult += Environment.NewLine + result.TimeSpan;
+                        Console.WriteLine(Environment.NewLine + "Result: " + result.TimeSpan);
+                    }
+
+                    if (saveResult)
+                    {
+                        DateTime time = DateTime.Now;
+                        string format = "dd.MM.yyyy_HH:mm:ss";
+                        var fileName = "GA_" + time.ToString(format) + ".txt";
                         Console.WriteLine("Saving results to " + fileName);
                         FileHelper.CreateFile(_resultsDirectory, fileName, stringResult);
                     }
