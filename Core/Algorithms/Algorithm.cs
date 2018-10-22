@@ -87,10 +87,10 @@ namespace Core.Algorithms
 
         protected virtual void GatherAlgorithmEfficiencyInformation()
         {
-            // System.IO.File.AppendAllText(
-            //     System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestResults/eff.txt", 
-            //     "Iteration: " + i + ", solutionsDiversity: " + _solutionsDiversities.Last() + ", globalOpt: " + _globalOptimum.TimeSpan + System.Environment.NewLine
-            // );
+            System.IO.File.AppendAllText(
+                System.IO.Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName + "/IntegrationTests/TestResults/eff.txt", 
+                /*"Iteration: " + i + */", solutionsDiversity: " + _solutionsDiversities.Last() + ", globalOpt: " + _globalOptimum.TimeSpan + System.Environment.NewLine
+            );
         }
 
         public enum Type {

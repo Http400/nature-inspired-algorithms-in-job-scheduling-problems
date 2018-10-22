@@ -173,24 +173,27 @@ namespace ConsoleApp
                 command.Description = "Solve job scheduling problem using Genetic Algorithm.";
                 command.HelpOption("-?|-h|--help");
 
-                var populationSizeOption    = command.Option("-s|--size",           "Specify population size",                      CommandOptionType.SingleValue);
-                var iterationsNumberOption  = command.Option("-i|--iterations",     "Specify number of iterations",                 CommandOptionType.SingleValue);
-                var jobTypeOption           = command.Option("-js|--jobs-system",   "Specify jobs system: \"f\", \"j\" or \"o\"",   CommandOptionType.SingleValue);
-                var inputFileOption         = command.Option("-if|--input-file",    "Specify input file",                           CommandOptionType.SingleValue);
-                var saveResultOption        = command.Option("-sr|--save-result",   "Specify if save result",                       CommandOptionType.NoValue);
-                var executionsNumberOption  = command.Option("-e|--executions",     "Specify number of executions",                 CommandOptionType.SingleValue);
+                var populationSizeOption        = command.Option("-s|--size",           "Specify population size",                      CommandOptionType.SingleValue);
+                var iterationsNumberOption      = command.Option("-i|--iterations",     "Specify number of iterations",                 CommandOptionType.SingleValue);
+                var mutationProbabilityOption   = command.Option("-mp",                 "Specify probability of mutation (0<=p<=100)",  CommandOptionType.SingleValue);
+                var jobTypeOption               = command.Option("-js|--jobs-system",   "Specify jobs system: \"f\", \"j\" or \"o\"",   CommandOptionType.SingleValue);
+                var inputFileOption             = command.Option("-if|--input-file",    "Specify input file",                           CommandOptionType.SingleValue);
+                var saveResultOption            = command.Option("-sr|--save-result",   "Specify if save result",                       CommandOptionType.NoValue);
+                var executionsNumberOption      = command.Option("-e|--executions",     "Specify number of executions",                 CommandOptionType.SingleValue);
 
                 command.OnExecute(() => {
-                    var populationSize  = populationSizeOption.HasValue()   ? Int16.Parse( populationSizeOption.Value() )   : 10;
-                    var iterationNumber = iterationsNumberOption.HasValue() ? Int16.Parse( iterationsNumberOption.Value() ) : 5;
-                    var jobType         = jobTypeOption.HasValue()          ? jobTypeOption.Value()                         : "f";
-                    var inputFile       = inputFileOption.HasValue()        ? inputFileOption.Value()                       : "TestInstances/flowshop/tai20_5/0.txt";
-                    var saveResult      = saveResultOption.HasValue()       ? true                                          : false;
-                    var executions      = executionsNumberOption.HasValue() ? Int16.Parse( executionsNumberOption.Value() ) : 1;
+                    var populationSize      = populationSizeOption.HasValue()       ? Int16.Parse( populationSizeOption.Value() )       : 10;
+                    var iterationNumber     = iterationsNumberOption.HasValue()     ? Int16.Parse( iterationsNumberOption.Value() )     : 5;
+                    var mutationProbability = mutationProbabilityOption.HasValue()  ? float.Parse( mutationProbabilityOption.Value() )  : 1F;
+                    var jobType             = jobTypeOption.HasValue()              ? jobTypeOption.Value()                             : "f";
+                    var inputFile           = inputFileOption.HasValue()            ? inputFileOption.Value()                           : "TestInstances/flowshop/tai20_5/0.txt";
+                    var saveResult          = saveResultOption.HasValue()           ? true                                              : false;
+                    var executions          = executionsNumberOption.HasValue()     ? Int16.Parse( executionsNumberOption.Value() )     : 1;
 
                     var optionsString = 
                           $" - population size:\t {populationSize}, {Environment.NewLine}"
                         + $" - iterations number:\t {iterationNumber}. {Environment.NewLine}"
+                        + $" - mutation probability:\t {mutationProbability}. {Environment.NewLine}"
                         + $" - job scheduling type:\t {jobType}, {Environment.NewLine}"
                         + $" - input file:\t\t {inputFile} {Environment.NewLine}"
                         + $" - save results:\t {saveResult} {Environment.NewLine}"
@@ -203,7 +206,7 @@ namespace ConsoleApp
 
                     var inputData = FileHelper.ReadFile(_inputDataDirectory, inputFile);
                     var schedulingProblem = SchedulingProblemFactory.Create(jobType, inputData);
-                    var algorithm = new GeneticAlgorithm(iterationNumber, populationSize, schedulingProblem);                 
+                    var algorithm = new GeneticAlgorithm(iterationNumber, populationSize, schedulingProblem, mutationProbability);                 
                     var stringResult = optionsString.Replace("\t", "") + Environment.NewLine;
 
                     for (int i = 0; i < executions; i++)

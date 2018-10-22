@@ -6,11 +6,14 @@ namespace Core.Algorithms
 {
     public class GeneticAlgorithm : Algorithm
     {
-        public GeneticAlgorithm(int maxIterations, int populationCount, SchedulingProblem schedulingProblem)
+        private float _mutationProbability;
+
+        public GeneticAlgorithm(int maxIterations, int populationCount, SchedulingProblem schedulingProblem, float mutationProbability = 1)
         {
             _maxIterations = maxIterations;
             _populationCount = populationCount;
             _schedulingProblem = schedulingProblem;
+            _mutationProbability = mutationProbability;
             _population = CreatePopulation();
         }
 
@@ -41,9 +44,12 @@ namespace Core.Algorithms
 
         public void Mutation()
         {
+            var random = new Random();
+
             foreach (var genotype in _population)
             {
-                genotype.Mutate();
+                if ( random.Next(0, 101) <= _mutationProbability * 100 )
+                    genotype.Mutate();
             }
         }
 

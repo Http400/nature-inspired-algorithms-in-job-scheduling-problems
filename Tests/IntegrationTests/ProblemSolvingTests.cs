@@ -100,24 +100,24 @@ namespace Tests.IntegrationTests
             //     5,                           // maxStep
             //     10                               // visual
             // }
-            // new object[] {
-            //     "jobshop/tai15_15",             // directory
-            //     "0.txt",                        // fileName
-            //     SchedulingProblemType.JobShop,  // schedulingProblemType
-            //     50,                             // maxIterations
-            //     50,                             // populationCount
-            //     10,                           // maxStep
-            //     20                               // visual
-            // }
             new object[] {
-                "openshop/tai4_4",             // directory
+                "jobshop/tai15_15",             // directory
                 "0.txt",                        // fileName
-                SchedulingProblemType.OpenShop,  // schedulingProblemType
-                100,                             // maxIterations
-                100,                             // populationCount
-                4,                           // maxStep
-                12                             // visual
+                SchedulingProblemType.JobShop,  // schedulingProblemType
+                50,                             // maxIterations
+                50,                             // populationCount
+                10,                           // maxStep
+                20                               // visual
             }
+            // new object[] {
+            //     "openshop/tai4_4",             // directory
+            //     "0.txt",                        // fileName
+            //     SchedulingProblemType.OpenShop,  // schedulingProblemType
+            //     100,                             // maxIterations
+            //     100,                             // populationCount
+            //     4,                           // maxStep
+            //     12                             // visual
+            // }
         };
 
         [Test, TestCaseSource("perform_genetic_algorithm_test_cases")]
@@ -130,7 +130,7 @@ namespace Tests.IntegrationTests
             // Act
             var inputData = FileHelper.ReadFile(path, fileName);
             var schedulingProblem = SchedulingProblemFactory.Create(schedulingProblemType, inputData);
-            var algorithm = new GeneticAlgorithm(maxIterations, populationCount, schedulingProblem);
+            var algorithm = new GeneticAlgorithm(maxIterations, populationCount, schedulingProblem, 0.1F);
             
             var watch = System.Diagnostics.Stopwatch.StartNew();
             var result = algorithm.Perform();
@@ -153,25 +153,25 @@ namespace Tests.IntegrationTests
 
         private static object[] perform_genetic_algorithm_test_cases = 
         {
-            new object[] {
-                "flowshop/tai20_5",             // directory
-                "0.txt",                        // fileName
-                SchedulingProblemType.FlowShop, // schedulingProblemType
-                100,                            // maxIterations
-                100,                            // populationCount
-            }
             // new object[] {
-            //     "jobshop/tai15_15",             // directory
+            //     "flowshop/tai20_5",             // directory
             //     "0.txt",                        // fileName
-            //     SchedulingProblemType.JobShop,  // schedulingProblemType
-            //     5,                             // maxIterations
-            //     10,                             // populationCount
+            //     SchedulingProblemType.FlowShop, // schedulingProblemType
+            //     100,                            // maxIterations
+            //     50,                            // populationCount
             // }
+            new object[] {
+                "jobshop/tai15_15",             // directory
+                "0.txt",                        // fileName
+                SchedulingProblemType.JobShop,  // schedulingProblemType
+                100,                             // maxIterations
+                50,                             // populationCount
+            }
             // new object[] {
             //     "openshop/tai4_4",             // directory
             //     "0.txt",                        // fileName
             //     SchedulingProblemType.OpenShop,  // schedulingProblemType
-            //     100,                             // maxIterations
+            //     200,                             // maxIterations
             //     100,                             // populationCount
             // }
         };
