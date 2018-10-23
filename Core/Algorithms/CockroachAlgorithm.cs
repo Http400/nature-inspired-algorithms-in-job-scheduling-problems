@@ -27,9 +27,8 @@ namespace Core.Algorithms
             UpdateCriterionValue();
             FindGlobalOptimum();
             RuthlessBehavior();
-
-            CalculateSolutionsDiversity();
-            GatherAlgorithmEfficiencyInformation();
+            // CalculateSolutionsDiversity();
+            // GatherAlgorithmEfficiencyInformation();
         }
 
         public List<Solution> GetPopulation()

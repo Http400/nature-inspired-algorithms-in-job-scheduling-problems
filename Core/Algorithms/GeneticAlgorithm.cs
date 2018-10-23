@@ -23,9 +23,8 @@ namespace Core.Algorithms
             Mutation();
             UpdateCriterionValue();
             FindGlobalOptimum();
-
-            CalculateSolutionsDiversity();
-            GatherAlgorithmEfficiencyInformation();
+            // CalculateSolutionsDiversity();
+            // GatherAlgorithmEfficiencyInformation();
         }
 
         public List<Solution> GetPopulation()

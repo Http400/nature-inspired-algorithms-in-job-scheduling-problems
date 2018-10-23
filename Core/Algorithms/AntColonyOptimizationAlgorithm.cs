@@ -35,9 +35,8 @@ namespace Core.Algorithms
             UpdateCriterionValue();
             LocalPheromoneUpdate();
             FindGlobalOptimum();
-        
-            CalculateSolutionsDiversity();
-            GatherAlgorithmEfficiencyInformation();
+            // CalculateSolutionsDiversity();
+            // GatherAlgorithmEfficiencyInformation();
             ResetAntsPaths();
         }
 
