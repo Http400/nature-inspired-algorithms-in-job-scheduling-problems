@@ -45,22 +45,22 @@ namespace Tests.IntegrationTests
             //     50,                            // populationCount
             //     0.2F                            // evaporationRate
             // }
-            // new object[] {
-            //     "jobshop/tai15_15",             // directory
-            //     "0.txt",                        // fileName
-            //     SchedulingProblemType.JobShop,  // schedulingProblemType
-            //     5,                             // maxIterations
-            //     10,                             // populationCount
-            //     0.8F                            // evaporationRate
-            // }
             new object[] {
-                "openshop/tai4_4",             // directory
+                "jobshop/tai15_15",             // directory
                 "0.txt",                        // fileName
-                SchedulingProblemType.OpenShop,  // schedulingProblemType
-                20,                             // maxIterations
-                50,                             // populationCount
-                0.2F                            // evaporationRate
+                SchedulingProblemType.JobShop,  // schedulingProblemType
+                5,                             // maxIterations
+                10,                             // populationCount
+                0.8F                            // evaporationRate
             }
+            // new object[] {
+            //     "openshop/tai4_4",             // directory
+            //     "0.txt",                        // fileName
+            //     SchedulingProblemType.OpenShop,  // schedulingProblemType
+            //     20,                             // maxIterations
+            //     50,                             // populationCount
+            //     0.2F                            // evaporationRate
+            // }
         };
 
         [Test, TestCaseSource("perform_cockroach_optimization_algorithm_test_cases")]

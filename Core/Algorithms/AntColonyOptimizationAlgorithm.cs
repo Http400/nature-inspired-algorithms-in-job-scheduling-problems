@@ -81,11 +81,8 @@ namespace Core.Algorithms
                 var random = new System.Random();
                 var randomIndex = random.Next(0, startingFeasibleGraphNodes.Count);
                 ant.AddGraphNode(startingFeasibleGraphNodes[randomIndex], _schedulingProblem.Jobs);
-            }
 
-            for (int m = 0; m < _nodes.Count - 1; m++)
-            {
-                foreach (var ant in _population)
+                for (int m = 0; m < _nodes.Count - 1; m++)
                 {
                     var lastGraphNode = ant.GetGraphNodeByIndex(m);
                     var nextFeasibleGraphNodes = ant.GetNextFeasibleGraphNodes(_schedulingProblem.Jobs);
@@ -94,13 +91,13 @@ namespace Core.Algorithms
                     var probabilitySum = GetPathsProbabilitySum(ant, nextFeasiblePaths);
 
                     float cumulative = 0.0F;
-                    int random = new Random().Next(1, 101);
+                    int randomValue = random.Next(1, 101);
                     var selectedPath = new Path();
 
                     foreach (var path in nextFeasiblePaths)
                     {
                         cumulative += path.Pheromone / probabilitySum * 100;
-                        if (random - cumulative < 1)
+                        if (randomValue - cumulative < 1)
                         {
                             selectedPath = path;
                             break;
@@ -111,6 +108,37 @@ namespace Core.Algorithms
                     ant.AddPath(selectedPath);
                 }
             }
+
+            // for (int m = 0; m < _nodes.Count - 1; m++)
+            // {
+            //     foreach (var ant in _population)
+            //     {
+            //         var lastGraphNode = ant.GetGraphNodeByIndex(m);
+            //         var nextFeasibleGraphNodes = ant.GetNextFeasibleGraphNodes(_schedulingProblem.Jobs);
+            //         var nextFeasiblePaths = GetNextFeasiblePaths(_paths, lastGraphNode, nextFeasibleGraphNodes);
+
+            //         var probabilitySum = GetPathsProbabilitySum(ant, nextFeasiblePaths);
+
+            //         float cumulative = 0.0F;
+            //         int random = new Random().Next(1, 101);
+            //         var selectedPath = new Path();
+
+            //         foreach (var path in nextFeasiblePaths)
+            //         {
+            //             cumulative += path.Pheromone / probabilitySum * 100;
+            //             if (random - cumulative < 1)
+            //             {
+            //                 selectedPath = path;
+            //                 break;
+            //             }
+            //         }
+
+            //         ant.AddGraphNode(selectedPath.EndingOperation, _schedulingProblem.Jobs);
+            //         ant.AddPath(selectedPath);
+            //     }
+            // }
+
+            
         }
 
         private void PheromoneEvaporation()
